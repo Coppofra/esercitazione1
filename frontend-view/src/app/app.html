@@ -1,11 +1,44 @@
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * The content below * * * * * * * * * * * -->
-<!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * -->
-<!-- * * * * * * * * * * and can be replaced.  * * * * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * Delete the template below * * * * * * * * * -->
-<!-- * * * * * * * to get started with your project! * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+<div class="container">
+  <h1>{{ title() }} - Visualizzazione Voti</h1>
+  
+  <div class="search-section">
+    <input 
+      type="text" 
+      [(ngModel)]="searchName" 
+      (input)="filterGrades()"
+      placeholder="Cerca per nome studente..."
+      class="search-input"
+    />
+  </div>
+
+  <div class="grades-table">
+    <h2>Elenco Voti</h2>
+    <div *ngIf="filteredGrades.length === 0" class="no-grades">
+      <p>Nessun voto trovato per "{{ searchName }}"</p>
+    </div>
+    
+    <div *ngIf="filteredGrades.length > 0" class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Nome Studente</th>
+            <th>Materia</th>
+            <th>Voto</th>
+            <th>Data</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let grade of filteredGrades" [ngClass]="'grade-' + getGradeColor(grade.grade)">
+            <td>{{ grade.student_name }}</td>
+            <td>{{ grade.subject }}</td>
+            <td class="grade-cell">{{ grade.grade }}</td>
+            <td>{{ grade.date }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
 
 <style>
   :host {

@@ -10,10 +10,10 @@ class DatabaseWrapper:
     def connect(self):
         try:
             connection = pymysql.connect(
-                host=os.getenv('mysql-1b026e4-iisgalvanimi-31ea.k.aivencloud.com'),
-                user=os.getenv('avnadmin'),
-                password=os.getenv('AVNS_ACXA0UNk3L5J6if6jFC'),
-                database=os.getenv('defaultdb')
+                host=os.getenv('DB_HOST'),
+                user=os.getenv('DB_USER'),
+                password=os.getenv('DB_PASSWORD'),
+                database=os.getenv('DB_NAME')
             )
             return connection
         except Exception as e:
