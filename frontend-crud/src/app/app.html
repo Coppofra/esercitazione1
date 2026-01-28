@@ -1,11 +1,116 @@
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * The content below * * * * * * * * * * * -->
-<!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * -->
-<!-- * * * * * * * * * * and can be replaced.  * * * * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * Delete the template below * * * * * * * * * -->
-<!-- * * * * * * * to get started with your project! * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+<div class="container">
+  <h1>{{ title() }} - Gestione Voti</h1>
+  
+  <!-- Messages -->
+  <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+
+  <!-- Add Grade Button -->
+  <div class="button-section">
+    <button *ngIf="!showForm" (click)="openForm()" class="btn btn-primary">
+      Aggiungi Nuovo Voto
+    </button>
+  </div>
+
+  <!-- Form -->
+  <div *ngIf="showForm" class="form-section">
+    <h2>{{ editingId ? 'Modifica Voto' : 'Nuovo Voto' }}</h2>
+    <form (ngSubmit)="submitForm()">
+      <div class="form-group">
+        <label for="studentName">Nome Studente:</label>
+        <input 
+          type="text" 
+          id="studentName"
+          [(ngModel)]="studentName" 
+          name="studentName"
+          required
+          placeholder="Inserisci nome studente"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="subject">Materia:</label>
+        <input 
+          type="text" 
+          id="subject"
+          [(ngModel)]="subject" 
+          name="subject"
+          required
+          placeholder="Inserisci materia"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="grade">Voto (1-10):</label>
+        <input 
+          type="number" 
+          id="grade"
+          [(ngModel)]="grade" 
+          name="grade"
+          min="1"
+          max="10"
+          step="0.01"
+          required
+          placeholder="Inserisci voto"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="date">Data:</label>
+        <input 
+          type="date" 
+          id="date"
+          [(ngModel)]="date" 
+          name="date"
+          required
+        />
+      </div>
+
+      <div class="form-buttons">
+        <button type="submit" class="btn btn-success">
+          {{ editingId ? 'Aggiorna' : 'Aggiungi' }}
+        </button>
+        <button type="button" (click)="closeForm()" class="btn btn-secondary">
+          Annulla
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Grades Table -->
+  <div class="grades-table">
+    <h2>Elenco Voti</h2>
+    <div *ngIf="grades.length === 0" class="no-grades">
+      <p>Nessun voto presente nel database</p>
+    </div>
+    
+    <div *ngIf="grades.length > 0" class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Nome Studente</th>
+            <th>Materia</th>
+            <th>Voto</th>
+            <th>Data</th>
+            <th>Azioni</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let grade of grades" [ngClass]="'grade-' + getGradeColor(grade.grade)">
+            <td>{{ grade.student_name }}</td>
+            <td>{{ grade.subject }}</td>
+            <td class="grade-cell">{{ grade.grade }}</td>
+            <td>{{ grade.date }}</td>
+            <td class="actions">
+              <button (click)="openForm(grade)" class="btn btn-small btn-edit">Modifica</button>
+              <button (click)="deleteGrade(grade.id)" class="btn btn-small btn-delete">Elimina</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
 
 <style>
   :host {
